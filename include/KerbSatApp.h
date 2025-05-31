@@ -2,6 +2,7 @@
 #define __KerbsatApp__
 
 #include <IMUSensor.h>
+#include <LoraRadio.h>
 
 class KerbSatApp
 {
@@ -12,6 +13,7 @@ public:
 
 private:
     IMUSensor imu_sensor_;
+    LoraRadio lora_radio_;
 };
 
 #endif

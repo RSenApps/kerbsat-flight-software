@@ -5,3 +5,4 @@
 .vscode/ipch
 .vscode
 variants
+include/Secrets.h
