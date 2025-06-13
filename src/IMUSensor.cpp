@@ -119,12 +119,12 @@ IMUSensor::SensorVal IMUSensor::readSensor()
     bno_.getEvent(&event);
 
     /* Display the floating point data */
-    Serial.print("X: ");
-    Serial.print(event.orientation.x, 4);
-    Serial.print("\tY: ");
-    Serial.print(event.orientation.y, 4);
-    Serial.print("\tZ: ");
-    Serial.print(event.orientation.z, 4);
-    Serial.println();
+    // Serial.print("X: ");
+    // Serial.print(event.orientation.x, 4);
+    // Serial.print("\tY: ");
+    // Serial.print(event.orientation.y, 4);
+    // Serial.print("\tZ: ");
+    // Serial.print(event.orientation.z, 4);
+    // Serial.println();
     return {event.orientation.x, event.orientation.y, event.orientation.z};
 }
