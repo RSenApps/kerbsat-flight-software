@@ -15,7 +15,7 @@ static osjob_t sendjob;
 
 // Schedule TX every this many seconds (might become longer due to duty
 // cycle limitations).
-const unsigned TX_INTERVAL = 15;
+const unsigned TX_INTERVAL = 60;
 
 // sx1272 for adafruit module (change in project project_config\lmic_project_config.h)
 const lmic_pinmap lmic_pins = {

@@ -3,6 +3,7 @@
 
 #include <IMUSensor.h>
 #include <LoraRadio.h>
+#include <SpectralSensor.h>
 
 class KerbSatApp
 {
@@ -13,6 +14,7 @@ public:
 
 private:
     IMUSensor imu_sensor_;
+    SpectralSensor spectral_sensor_;
     LoraRadio lora_radio_;
 };
 
