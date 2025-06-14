@@ -18,6 +18,7 @@ public:
 
 private:
     Adafruit_BNO055 bno_ = Adafruit_BNO055(55, 0x28, &Wire);
+    bool sensor_ready_ = false;
 };
 
 #endif

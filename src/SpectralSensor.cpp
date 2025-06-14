@@ -5,24 +5,26 @@ void SpectralSensor::setup()
     if (!as7341_.begin(0x39, &Wire))
     {
         Serial.println("Could not find AS7341");
-        while (1)
-        {
-            delay(10);
-        }
+        sensor_ready_ = false;
+        return;
     }
     as7341_.setATIME(100);
     as7341_.setASTEP(999);
     as7341_.setGain(AS7341_GAIN_256X);
+    sensor_ready_ = true;
 }
 
 SpectralSensor::SensorVal SpectralSensor::readSensor()
 {
+    if (!sensor_ready_)
+        return {};
+
     uint16_t readings[12];
     SensorVal sensor_val;
     if (!as7341_.readAllChannels(readings))
     {
         Serial.println("Error reading all channels!");
-        return sensor_val;
+        return {};
     }
 
     uint8_t basic_counts_idx = 0;

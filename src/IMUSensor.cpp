@@ -98,8 +98,8 @@ void IMUSensor::setup()
     {
         /* There was a problem detecting the BNO055 ... check your connections */
         Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
-        while (1)
-            ;
+        sensor_ready_ = false;
+        return;
     }
 
     delay(1000);
@@ -111,10 +111,14 @@ void IMUSensor::setup()
     displaySensorStatus(bno_);
 
     bno_.setExtCrystalUse(true);
+    sensor_ready_ = true;
 }
 
 IMUSensor::SensorVal IMUSensor::readSensor()
 {
+    if (!sensor_ready_) {
+        return {};
+    }
     sensors_event_t event;
     bno_.getEvent(&event);
 

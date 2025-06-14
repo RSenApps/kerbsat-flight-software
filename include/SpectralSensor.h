@@ -16,6 +16,7 @@ public:
 
 private:
     Adafruit_AS7341 as7341_;
+    bool sensor_ready_ = false;
 };
 
 #endif
