@@ -10,12 +10,12 @@
 // The library converts the address to network byte order as needed, so this should be in big-endian (aka msb) too.
 static const u4_t DEVADDR = 0x260CCDB3; // <-- Change this address for every node!
 
-static uint8_t mydata[] = "Hello, kerbin!" __DATE__ " " __TIME__;
+static uint8_t mydata[] = "a"; // "Hello, kerbin!" __DATE__ " " __TIME__;
 static osjob_t sendjob;
 
 // Schedule TX every this many seconds (might become longer due to duty
 // cycle limitations).
-const unsigned TX_INTERVAL = 60;
+const unsigned TX_INTERVAL = 15;
 
 // sx1272 for adafruit module (change in project project_config\lmic_project_config.h)
 const lmic_pinmap lmic_pins = {
@@ -24,8 +24,6 @@ const lmic_pinmap lmic_pins = {
     .rst = LMIC_UNUSED_PIN,
     .dio = {PA1, PA2, LMIC_UNUSED_PIN},
     .rxtx_rx_active = 0,
-    .rssi_cal = 8, // LBT cal for the Adafruit Feather 32U4 LoRa, in dB
-    .spi_freq = 1000000,
 };
 
 void printHex2(unsigned v)
@@ -38,6 +36,15 @@ void printHex2(unsigned v)
 
 void do_send(osjob_t *j)
 {
+    // TODO(senanayake): This should be DR_SF12CR but not receiving messages from devboard or sat through gateway
+    // for SF > 19 (possibly gateway issue?)
+
+    // Be mindful of logic in adjustDrForFrameIfNotBusy
+    // only sets spread factor depending on message length
+    // Also doensn't always get applied so try to set on every send
+    // https://github.com/mcci-catena/arduino-lmic/issues/21
+    LMIC_setDrTxpow(DR_SF10, 14);
+
     // Check if there is not a current TX/RX job running
     if (LMIC.opmode & OP_TXRXPEND)
     {
@@ -170,12 +177,6 @@ void LoraRadio::setup()
 
     // TTN uses SF9 for its RX2 window.
     LMIC.dn2Dr = DR_SF9;
-
-    // Set data rate and transmit power for uplink
-    // TODO(senanayake): This should be DR_SF12 but not receiving messages from devboard or sat through gateway
-    // for SF >= 10
-    LMIC_setDrTxpow(DR_SF7, 14);
-
     do_send(&sendjob);
 }
 
